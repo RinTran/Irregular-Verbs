@@ -3,18 +3,27 @@ package com.rintran.irregularverbs;
 
 
 public class Item {
-    private String name;
-    private int linkImage;
 
-    public Item(String n, int l){
-        this.name = n;
-        this.linkImage = l;
+    private String name;
+    private int image;
+
+    public Item() {
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
-    public int getLinkImage(){
-        return linkImage;
+
+    public int getImage() {
+        return image;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
+    }
+
 }

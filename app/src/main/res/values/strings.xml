@@ -7,4 +7,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="icon">icon</string>
+
+    <string name="theme_title">Select your theme</string>
+    <string name="theme_st">Your selection:</string>
 </resources>
