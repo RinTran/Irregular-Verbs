@@ -9,4 +9,10 @@
     
     <dimen name="icon_width">20dp</dimen>
     <dimen name="icon_height">20dp</dimen>
+
+    <dimen name="image_size">40sp</dimen>
+
+    <dimen name="text_title_size">25sp</dimen>
+    <dimen name="text_of_list_size">20sp</dimen>
+    <dimen name="margin_text">20sp</dimen>
 </resources>

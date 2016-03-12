@@ -3,6 +3,7 @@ package com.rintran.irregularverbs;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -34,6 +35,9 @@ public class ITAdapter extends ArrayAdapter<Item> {
 
         ImageView img = (ImageView) view.findViewById(R.id.theme_image);
         TextView textView = (TextView) view.findViewById(R.id.theme_name);
+
+        Typeface typeface = Typeface.createFromAsset(context.getAssets(), "fonts/timesbi.ttf");
+        textView.setTypeface(typeface);
 
         Item item = objects.get(position);
         img.setImageResource(item.getImage());

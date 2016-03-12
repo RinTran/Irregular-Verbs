@@ -10,4 +10,8 @@
 
     <string name="theme_title">Select your theme</string>
     <string name="theme_st">Your selection:</string>
+    <string name="banner_title">Banner</string>
+    <string name="image">Image</string>
+    <string name="nav_name">Your application</string>
+    <string name="favotite">Favorite</string>
 </resources>

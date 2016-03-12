@@ -2,7 +2,9 @@ package com.rintran.irregularverbs;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -10,9 +12,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
+
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    SQLDataSource db;
+    List<Verbs> list;
+    ListView content;
+    CustomListviewAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,15 +34,15 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-// Email item action
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -38,6 +52,46 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //
+        list = new ArrayList<>();
+        db = new SQLDataSource(this);
+        list = db.getListVerb();
+        adapter = new CustomListviewAdapter(this,R.layout.custom_listview,list);
+
+        //
+        Intent callerIntent = getIntent();
+        int pos = callerIntent.getIntExtra("pos", 0);
+        switch (pos){
+            case 0:
+                drawer.setBackgroundResource(R.drawable.background_default);
+                break;
+            case 1:
+                drawer.setBackgroundResource(R.mipmap.background_girl);
+                break;
+            case 2:
+                drawer.setBackgroundResource(R.mipmap.background_forest);
+                break;
+            case 3:
+                drawer.setBackgroundResource(R.mipmap.background_king_pirate);
+                break;
+            case 4:
+                drawer.setBackgroundResource(R.mipmap.background_leaf);
+                break;
+            case 5:
+                drawer.setBackgroundResource(R.mipmap.background_love);
+                break;
+            case 6:
+                drawer.setBackgroundResource(R.mipmap.background_puzzle);
+                break;
+            case 7:
+                drawer.setBackgroundResource(R.mipmap.background_vector_shapes);
+                break;
+            default:
+                drawer.setBackgroundResource(R.mipmap.background_default);
+        }
+
+
     }
 
     @Override
@@ -65,10 +119,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
 
-        // Click item setting
-        return id == R.id.action_settings || super.onOptionsItemSelected(item);
-
+        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -78,18 +133,12 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_favorite) {
-            // Handle the camera action
 
         } else if (id == R.id.nav_theme) {
-            // Connect to ThemeActivity
-            Intent intent = new Intent(MainActivity.this,ThemeActivity.class);
-
-            startActivity(intent);
+            startActivity(new Intent(MainActivity.this,ThemeActivity.class));
         } else if (id == R.id.nav_quit) {
             finish();
         } else if (id == R.id.nav_share) {
-
-        //} else if (id == R.id.nav_send) {
 
         }
 
@@ -97,4 +146,5 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_of_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
+    android:orientation="horizontal"
+    tools:ignore="UseCompoundDrawables">
     <ImageView
         android:id="@+id/theme_image"
-        android:layout_width="20px"
-        android:layout_height="20px"
-        />
-
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        android:contentDescription="@string/image" />
     <TextView
         android:id="@+id/theme_name"
-        android:layout_width="fill_parent"
-        android:layout_height="26dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:ellipsize="marquee"
         android:singleLine="true"
-        android:layout_marginTop="7dp"
-        />
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/margin_text"
+        android:textSize="@dimen/text_of_list_size"
 
+        />
 </LinearLayout>

@@ -14,7 +14,7 @@
     android:orientation="vertical">
 
     <include
-        layout="@layout/activity_theme_content">
+        layout="@layout/theme_content">
     </include>
 
 

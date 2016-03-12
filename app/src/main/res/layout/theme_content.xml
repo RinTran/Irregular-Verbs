@@ -10,11 +10,14 @@
     android:layout_height="wrap_content"
     android:textAppearance="?android:attr/textAppearanceMedium"
     android:text="@string/theme_title"
+    android:textSize="@dimen/text_title_size"
     android:id="@+id/txtvThemeTitle" />
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
     <ListView
         android:id="@+id/them_list"
-        android:background="#be1e1e"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
