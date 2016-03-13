@@ -11,7 +11,7 @@ import java.io.OutputStream;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public static final String DATA_NAME = "IrregularVerbs";
+    public static final String DATA_NAME = "IrregularVerbs.sqlite";
     public static final String TABLE_VERB = "Verbs";
 
     public static final String NGUYENMAU = "NGUYENMAU";

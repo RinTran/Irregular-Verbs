@@ -1,6 +1,7 @@
 package com.rintran.irregularverbs;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -13,7 +14,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 import java.util.ArrayList;
@@ -25,7 +28,7 @@ public class MainActivity extends AppCompatActivity
     SQLDataSource db;
     List<Verbs> list;
     ListView content;
-    CustomListviewAdapter adapter;
+
 
 
     @Override
@@ -53,15 +56,35 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        TextView c1 = (TextView) findViewById(R.id.c1);
+        TextView c2 = (TextView) findViewById(R.id.c2);
+        TextView c3 = (TextView) findViewById(R.id.c3);
+        TextView c4 = (TextView) findViewById(R.id.c4);
+        Typeface typeface = Typeface.createFromAsset(this.getAssets(), "fonts/georgiab.ttf");
+        c1.setTypeface(typeface);
+        c2.setTypeface(typeface);
+        c3.setTypeface(typeface);
+        c4.setTypeface(typeface);
+
         //
         list = new ArrayList<>();
         db = new SQLDataSource(this);
         list = db.getListVerb();
-        adapter = new CustomListviewAdapter(this,R.layout.custom_listview,list);
+
+        content = (ListView) findViewById(R.id.list_verb);
+        CustomListviewAdapter adapter = new CustomListviewAdapter(this,R.layout.content_list_verb,list);
+        content.setAdapter(adapter);
+
+        content.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
 
         //
-        Intent callerIntent = getIntent();
-        int pos = callerIntent.getIntExtra("pos", 0);
+        Intent intent = getIntent();
+        int pos = intent.getIntExtra("pos", 0);
         switch (pos){
             case 0:
                 drawer.setBackgroundResource(R.drawable.background_default);

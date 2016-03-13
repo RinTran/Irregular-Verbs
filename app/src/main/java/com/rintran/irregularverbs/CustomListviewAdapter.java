@@ -1,6 +1,8 @@
 package com.rintran.irregularverbs;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -8,9 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-/**
- * Created by rintr on 3/9/2016.
- */
+
 public class CustomListviewAdapter extends ArrayAdapter<Verbs> {
     Context context;
     int resource;
@@ -22,13 +22,16 @@ public class CustomListviewAdapter extends ArrayAdapter<Verbs> {
         this.objects = objects;
     }
 
+    @SuppressLint("ViewHolder")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = View.inflate(context,resource,null);
-        TextView tvNguyenMau = (TextView)view.findViewById(R.id.nguyenmau);
-        TextView tvQuaKhu = (TextView)view.findViewById(R.id.quakhu);
-        TextView tvQuaKhuPhanTu = (TextView)view.findViewById(R.id.quakhuphantu);
-        TextView tvNghia = (TextView)view.findViewById(R.id.nghia);
+
+        convertView = View.inflate(context,resource,null);
+
+        TextView tvNguyenMau = (TextView)convertView.findViewById(R.id.nguyenmau);
+        TextView tvQuaKhu = (TextView)convertView.findViewById(R.id.quakhu);
+        TextView tvQuaKhuPhanTu = (TextView)convertView.findViewById(R.id.quakhuphantu);
+        TextView tvNghia = (TextView)convertView.findViewById(R.id.nghia);
 
         Verbs item = objects.get(position);
         tvNguyenMau.setText(item.getNguyenmau());
@@ -36,6 +39,12 @@ public class CustomListviewAdapter extends ArrayAdapter<Verbs> {
         tvQuaKhuPhanTu.setText(item.getQuakhuphantu());
         tvNghia.setText(item.getNghia());
 
-        return view;
+        Typeface typeface = Typeface.createFromAsset(context.getAssets(), "fonts/timesbi.ttf");
+        tvNghia.setTypeface(typeface);
+        tvNguyenMau.setTypeface(typeface);
+        tvQuaKhu.setTypeface(typeface);
+        tvQuaKhuPhanTu.setTypeface(typeface);
+
+        return convertView;
         }
 }

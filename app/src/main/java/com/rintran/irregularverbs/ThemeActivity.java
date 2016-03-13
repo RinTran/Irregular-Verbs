@@ -45,7 +45,7 @@ public class ThemeActivity extends AppCompatActivity {
         textView.setTypeface(typeface);
 
         ITAdapter adapter = new ITAdapter(ThemeActivity.this, R.layout.style_theme_list, theme);
-        listViewTheme = (ListView) findViewById(R.id.them_list);
+        listViewTheme = (ListView) findViewById(R.id.theme_list_content);
         listViewTheme.setAdapter(adapter);
 
         listViewTheme.setOnItemClickListener(new AdapterView.OnItemClickListener() {
