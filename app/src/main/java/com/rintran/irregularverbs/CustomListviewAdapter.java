@@ -46,5 +46,5 @@ public class CustomListviewAdapter extends ArrayAdapter<Verbs> {
         tvQuaKhuPhanTu.setTypeface(typeface);
 
         return convertView;
-        }
+    }
 }

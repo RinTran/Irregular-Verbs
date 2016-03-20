@@ -1,5 +1,7 @@
 package com.rintran.irregularverbs;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -23,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener  {
 
     SQLDataSource db;
     List<Verbs> list;
@@ -78,6 +80,7 @@ public class MainActivity extends AppCompatActivity
         content.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showFavoriteDialog(null);
 
             }
         });
@@ -155,8 +158,11 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_favorite) {
 
+        if (id == R.id.nav_verb) {
+
+        }else if (id == R.id.nav_favorite) {
+            //startActivity(new Intent(MainActivity.this,MainActivity.class));
         } else if (id == R.id.nav_theme) {
             startActivity(new Intent(MainActivity.this,ThemeActivity.class));
         } else if (id == R.id.nav_quit) {
@@ -168,6 +174,12 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    void showFavoriteDialog(View v){
+        FragmentManager manager = getFragmentManager();
+        FavoriteDialogFragment dialog = new FavoriteDialogFragment();
+        dialog.show(manager,"My Dialog");
     }
 
 }

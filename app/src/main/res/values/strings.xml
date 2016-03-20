@@ -3,6 +3,10 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="menu1">All verb</string>
+    <string name="menu2">Favorite</string>
+    <string name="menu3">Theme</string>
+    <string name="menu4">Quit</string>
 
     <string name="action_settings">Settings</string>
 
@@ -14,4 +18,7 @@
     <string name="image">Image</string>
     <string name="nav_name">Your application</string>
     <string name="favotite">Favorite</string>
+
+    <string name="favorite_title">Your favorite verbs:</string>
+
 </resources>

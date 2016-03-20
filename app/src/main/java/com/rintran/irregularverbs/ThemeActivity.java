@@ -44,7 +44,7 @@ public class ThemeActivity extends AppCompatActivity {
         Typeface typeface = Typeface.createFromAsset(this.getAssets(), "fonts/timesbi.ttf");
         textView.setTypeface(typeface);
 
-        ITAdapter adapter = new ITAdapter(ThemeActivity.this, R.layout.style_theme_list, theme);
+        ITAdapter adapter = new ITAdapter(ThemeActivity.this, R.layout.theme_list_style, theme);
         listViewTheme = (ListView) findViewById(R.id.theme_list_content);
         listViewTheme.setAdapter(adapter);
 
