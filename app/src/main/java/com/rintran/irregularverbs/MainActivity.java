@@ -1,6 +1,5 @@
 package com.rintran.irregularverbs;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -18,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 
@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity
     SQLDataSource db;
     List<Verbs> list;
     ListView content;
+    SearchView search;
+    CustomListviewAdapter adapter;
 
 
 
@@ -69,12 +71,27 @@ public class MainActivity extends AppCompatActivity
         c4.setTypeface(typeface);
 
         //
+        search = (SearchView) findViewById(R.id.search);
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchVerb(newText);
+                return true;
+            }
+        });
+
+       //
         list = new ArrayList<>();
         db = new SQLDataSource(this);
         list = db.getListVerb();
 
         content = (ListView) findViewById(R.id.list_verb);
-        CustomListviewAdapter adapter = new CustomListviewAdapter(this,R.layout.content_list_verb,list);
+        adapter = new CustomListviewAdapter(this,R.layout.content_list_verb,list);
         content.setAdapter(adapter);
 
         content.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -142,12 +159,16 @@ public class MainActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        //int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//        if (id == R.id.action_settings2) {
+//            return true;
+//        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -160,7 +181,9 @@ public class MainActivity extends AppCompatActivity
 
 
         if (id == R.id.nav_verb) {
-
+            list = db.getListVerb();
+            adapter = new CustomListviewAdapter(this,R.layout.content_list_verb,list);
+            content.setAdapter(adapter);
         }else if (id == R.id.nav_favorite) {
             //startActivity(new Intent(MainActivity.this,MainActivity.class));
         } else if (id == R.id.nav_theme) {
@@ -175,11 +198,18 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    public boolean searchVerb(String key){
+        list = db.getListVerbByKey(key);
+        CustomListviewAdapter adapter2 = new CustomListviewAdapter(this,R.layout.content_list_verb,list);
+        content.setAdapter(adapter2);
+        return true;
+    }
 
     void showFavoriteDialog(View v){
         FragmentManager manager = getFragmentManager();
         FavoriteDialogFragment dialog = new FavoriteDialogFragment();
         dialog.show(manager,"My Dialog");
+        v.setBackgroundResource(R.drawable.background_default);
     }
 
 }
