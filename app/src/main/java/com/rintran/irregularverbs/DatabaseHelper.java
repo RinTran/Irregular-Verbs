@@ -13,6 +13,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATA_NAME = "IrregularVerbs.sqlite";
     public static final String TABLE_VERB = "Verbs";
+    public static final String TABLE_FAVORITE = "Favorite";
 
     public static final String NGUYENMAU = "NGUYENMAU";
     public static final String QUAKHU = "QUAKHU";
@@ -42,7 +43,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean checkDatabase(){
         SQLiteDatabase kiemTraDB = null;
         try {
-            kiemTraDB = SQLiteDatabase.openDatabase(linkDatabase,null,kiemTraDB.OPEN_READONLY);
+            kiemTraDB = SQLiteDatabase.openDatabase(linkDatabase,null, SQLiteDatabase.OPEN_READONLY);
 
         }catch (Exception e){
             e.printStackTrace();

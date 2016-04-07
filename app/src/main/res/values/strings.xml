@@ -23,4 +23,9 @@
     <string name="title_activity_main2">Main2Activity</string>
 
     <string name="search">Search</string>
+
+    <string name="dialog_fire_missiles">dialog_fire_missiles</string>
+    <string name="fire">fire</string>
+    <string name="cancel">cancel</string>
+    <string name="preference_file_key">favorite_list_pre</string>
 </resources>

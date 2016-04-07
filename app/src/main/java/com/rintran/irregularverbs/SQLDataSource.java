@@ -40,6 +40,31 @@ public class SQLDataSource {
         return list;
     }
 
+    public List<Verbs> getListFavorite(){
+
+            List<Verbs> list = new ArrayList<>();
+
+            String[] colum = {DatabaseHelper.NGUYENMAU,DatabaseHelper.QUAKHU,DatabaseHelper.QUAKHUPHANTU,DatabaseHelper.NGHIA};
+
+            //Cursor c = sqLiteDatabase.query(DatabaseHelper.TABLE_VERB, colum, null, null, null, null, null);
+            String truyvan = "Select " + colum[0] + " , " + colum[1]    + " , " + colum[2] + " , " + colum[3] +
+                    " From " + DatabaseHelper.TABLE_FAVORITE;
+            Cursor c = sqLiteDatabase.rawQuery(truyvan, null);
+            c.moveToFirst();
+            while (!c.isAfterLast()){
+                Verbs item = new Verbs();
+                item.setNguyenmau(c.getString(0));
+                item.setQuakhu(c.getString(1));
+                item.setQuakhuphantu(c.getString(2));
+                item.setNghia(c.getString(3));
+
+                list.add(item);
+                c.moveToNext();
+            }
+            c.close();
+            return list;
+        }
+
     public List<Verbs> getListVerbByKey(String nguyenmau){
 
         List<Verbs> list = new ArrayList<>();
