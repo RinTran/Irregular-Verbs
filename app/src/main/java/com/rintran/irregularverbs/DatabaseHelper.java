@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,11 +15,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATA_NAME = "IrregularVerbs.sqlite";
     public static final String TABLE_VERB = "Verbs";
     public static final String TABLE_FAVORITE = "Favorite";
+    public static final String TABLE_STATUS = "Status";
 
     public static final String NGUYENMAU = "NGUYENMAU";
     public static final String QUAKHU = "QUAKHU";
     public static final String QUAKHUPHANTU = "QUAKHUPHANTU";
     public static final String NGHIA = "NGHIA";
+    public static final String NAME = "NAME";
+    public static final String VALUE = "VALUE";
+
 
     Context context;
 

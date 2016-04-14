@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.graphics.drawable.DrawableWrapper;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -15,7 +14,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,11 +21,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 public class MainActivity extends AppCompatActivity
@@ -35,9 +32,9 @@ public class MainActivity extends AppCompatActivity
     // data
     SQLDataSource db;// slqite data
     List<Verbs> listVerb;//
-    List<String> listFavorite;
     CustomListviewAdapter adapter;
     boolean status;
+    DrawerLayout drawer;
 
 
     // view
@@ -55,16 +52,17 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         // Setting
-        // - fab
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        listVerb = new ArrayList<>();
+        db = new SQLDataSource(this);
+        content = (ListView) findViewById(R.id.list_verb);
+        // - display list verb
+        listVerb = db.getListVerb();
+        setContentVerb(listVerb);
+        // - status of list
+        status = true;
 
-            }
-        });
         // - actionbar
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -73,14 +71,11 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         // - background
-        Intent intent = getIntent();
-        pos = intent.getIntExtra("pos", 0);
-        selectTheme(drawer,pos);
-        // - status of list
-        status = true;
+        selectTheme(getBackgroundId());
+
 
         // - setting view
-        TextView c1 = (TextView) findViewById(R.id.c1);
+        final TextView c1 = (TextView) findViewById(R.id.c1);
         TextView c2 = (TextView) findViewById(R.id.c2);
         TextView c3 = (TextView) findViewById(R.id.c3);
         TextView c4 = (TextView) findViewById(R.id.c4);
@@ -92,14 +87,23 @@ public class MainActivity extends AppCompatActivity
 
 
         // Method
-        // - display list verb
-        listVerb = new ArrayList<>();
-        db = new SQLDataSource(this);
-        listVerb = db.getListVerb();
-
-        content = (ListView) findViewById(R.id.list_verb);
-        adapter = new CustomListviewAdapter(this,R.layout.content_list_verb,listVerb);
-        content.setAdapter(adapter);
+        // - fab
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adapter = new CustomListviewAdapter(MainActivity.this, R.layout.content_list_verb, listVerb);
+                if (status) {
+                    listVerb = db.getListFavorite();
+                    setContentVerb(listVerb);
+                } else {
+                    listVerb = db.getListVerb();
+                    setContentVerb(listVerb);
+                }
+                content.setAdapter(adapter);
+                status = !status;
+            }
+        });
         // - add to favorite
         content.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -124,6 +128,19 @@ public class MainActivity extends AppCompatActivity
                     b.setNegativeButton(btn_left, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            TextView t1 = (TextView) view.findViewById(R.id.nguyenmau);
+                            TextView t2 = (TextView) view.findViewById(R.id.quakhu);
+                            TextView t3 = (TextView) view.findViewById(R.id.quakhuphantu);
+                            TextView t4 = (TextView) view.findViewById(R.id.nghia);
+                            db.removeFromFavorite(t1.getText().toString());
+                            if (db.insertFavorite(new Verbs(t1.getText().toString(), t2.getText().toString(),
+                                    t3.getText().toString(), t4.getText().toString()))) {
+                                Toast.makeText(MainActivity.this,
+                                        "Insert success", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(MainActivity.this,
+                                        "Insert fail", Toast.LENGTH_LONG).show();
+                            }
 
                             dialog.cancel();
                         }
@@ -149,7 +166,16 @@ public class MainActivity extends AppCompatActivity
                     b.setNegativeButton(btn_left, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
+                            TextView t1 = (TextView) view.findViewById(R.id.nguyenmau);
+                            if (db.removeFromFavorite(t1.getText().toString())) {
+                                listVerb = db.getListFavorite();
+                                setContentVerb(listVerb);
+                                Toast.makeText(MainActivity.this,
+                                        "Remove success", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(MainActivity.this,
+                                        "Remove fail", Toast.LENGTH_LONG).show();
+                            }
                             dialog.cancel();
                         }
                     });
@@ -168,40 +194,35 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                searchVerb(newText);
+                listVerb = db.getListVerbByKey(newText);
+                setContentVerb(listVerb);
+                status = true;
                 return true;
             }
         });
     }
 
-    private void selectTheme(DrawerLayout drawer,int pos) {
+    private void selectTheme(int pos) {
         switch (pos){
             case 0:
-                drawer.setBackgroundResource(R.drawable.background_default);
+                drawer.setBackgroundResource(R.drawable.background_you_are_here);
                 break;
             case 1:
-                drawer.setBackgroundResource(R.mipmap.background_girl);
+                drawer.setBackgroundResource(R.drawable.background_bat);
                 break;
             case 2:
-                drawer.setBackgroundResource(R.mipmap.background_forest);
+                drawer.setBackgroundResource(R.drawable.background_beauty_autum);
                 break;
             case 3:
-                drawer.setBackgroundResource(R.mipmap.background_king_pirate);
+                drawer.setBackgroundResource(R.drawable.background_hero);
                 break;
             case 4:
-                drawer.setBackgroundResource(R.mipmap.background_leaf);
+                drawer.setBackgroundResource(R.drawable.background_hourglass);
                 break;
             case 5:
-                drawer.setBackgroundResource(R.mipmap.background_love);
+                drawer.setBackgroundResource(R.drawable.background_panda);
                 break;
-            case 6:
-                drawer.setBackgroundResource(R.mipmap.background_puzzle);
-                break;
-            case 7:
-                drawer.setBackgroundResource(R.mipmap.background_vector_shapes);
-                break;
-            default:
-                drawer.setBackgroundResource(R.mipmap.background_default);
+
         }
     }
 
@@ -220,25 +241,6 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        //int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//        if (id == R.id.action_settings2) {
-//            return true;
-//        }
-
-
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -270,10 +272,32 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    public boolean searchVerb(String key){
-        listVerb = db.getListVerbByKey(key);
-        CustomListviewAdapter adapter2 = new CustomListviewAdapter(this,R.layout.content_list_verb,listVerb);
-        content.setAdapter(adapter2);
-        return true;
+
+    public void setContentVerb(List<Verbs> l) {
+        adapter = new CustomListviewAdapter(this, R.layout.content_list_verb, l);
+        content.setAdapter(adapter);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent intent = getIntent();
+        pos = intent.getIntExtra("savePos", getBackgroundId());
+        selectTheme(pos);
+        updateBacground(pos);
+    }
+
+    public int getBackgroundId() {
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        //int defaultValue = getResources().getInteger(R.string.saved_high_score_default);
+        return sharedPref.getInt("pos", 0);
+    }
+
+    public void updateBacground(int newPos) {
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("pos", newPos);
+        editor.apply();
+    }
+
 }

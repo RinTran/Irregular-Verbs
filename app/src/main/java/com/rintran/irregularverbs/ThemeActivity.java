@@ -1,11 +1,9 @@
 package com.rintran.irregularverbs;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -16,12 +14,9 @@ import java.util.ArrayList;
 
 public class ThemeActivity extends AppCompatActivity {
 
-    private String itemName[] = {"Default","Cute girl", "Forest", "King pirate","Leaf","Love","Puzzle","Vector shapes"};
-    private int itemImage[] = {R.mipmap.background_default,R.mipmap.background_girl,R.mipmap.background_forest,
-            R.mipmap.background_king_pirate,R.mipmap.background_leaf,R.mipmap.background_love,R.mipmap.background_puzzle,
-            R.mipmap.background_vector_shapes};
- //private int itemImage[]={R.drawable.ic_launcher,R.drawable.ic_launcher,R.drawable.ic_launcher,R.drawable.ic_launcher,
- // R.drawable.ic_launcher,R.drawable.ic_launcher,R.drawable.ic_launcher,R.drawable.ic_launcher};
+    private String itemName[] = {"Default", "Bat", "Beauty autum", "Hero", "Hourglass", "Panda"};
+    private int itemImage[] = {R.mipmap.background_you_are_here, R.mipmap.background_bat,
+            R.mipmap.background_beauty_autum, R.mipmap.background_hero, R.mipmap.background_hourglass, R.mipmap.background_panda};
 
     ListView listViewTheme;
     TextView textView;
@@ -42,7 +37,7 @@ public class ThemeActivity extends AppCompatActivity {
         }
 
         textView = (TextView)findViewById(R.id.txtvThemeTitle);
-        test = (TextView) findViewById(R.id.test);
+        //test = (TextView) findViewById(R.id.test);
 //        final View content = findViewById(R.id.theme);
 
         Typeface typeface = Typeface.createFromAsset(this.getAssets(), "fonts/timesbi.ttf");
@@ -55,8 +50,8 @@ public class ThemeActivity extends AppCompatActivity {
         listViewTheme.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                 Intent intent = new Intent(ThemeActivity.this,MainActivity.class);
-                intent.putExtra("pos",position);
+                Intent intent = new Intent(ThemeActivity.this, MainActivity.class);
+                intent.putExtra("savePos", position);
                 startActivity(intent);
                 //content.setBackgroundResource(R.drawable.background_default);
             }
